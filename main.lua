@@ -15,6 +15,11 @@ end
 
 function love.update(dt)
   local kb = love.keyboard
+  -- game
+  if kb.isDown('escape') then
+    love.event.push('quit')
+  end
+
   -- player direction throttle
   if kb.isDown('up', 'down') or player.speed then
     if player.y > 0 and player.y < love.graphics.getHeight() - player.img:getHeight() and
@@ -36,17 +41,17 @@ function love.update(dt)
       if player.speed <= maxSpeed then
         player.speed = player.speed + 2
       end
-      -- if player.scale > 1 then
-      --   player.scale = player.scale - (player.speed * dt / 100)
-      -- end
+      if player.scale > 1 then
+        player.scale = player.scale - (player.speed * dt / 100)
+      end
     end
     if kb.isDown('down') then
       if player.speed >= minSpeed then
-        player.speed = player.speed - 2
+        player.speed = player.speed - 3
       end
-      -- if player.scale < 1.5 then
-      --   player.scale = player.scale + (player.speed * dt / 100)
-      -- end
+      if player.scale < 1.5 then
+        player.scale = player.scale + (player.speed * dt / 100)
+      end
     end
   end
   -- decrease speed if no throttle
@@ -96,5 +101,5 @@ function love.draw()
     player.scale, player.scale,
     player.img:getWidth()/2, player.img:getHeight()/2
   )
-  love.graphics.print('Throttle: ' .. math.floor(player.speed), 10, 0)
+  love.graphics.print('Velocity: ' .. math.floor(player.speed), 10, 0)
 end
